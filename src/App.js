@@ -8,7 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
 
 const defaultAuth = {
-  isAuthenticated: true,
+  isAuthenticated: localStorage.getItem('loginToken') != '',
   signin() {
     this.isAuthenticated = true;
   },
