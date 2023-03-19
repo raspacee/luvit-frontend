@@ -1,0 +1,14 @@
+.form-picture-jpg {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
+}
+
+.form-form {
+	background: #76599b;
+	color: #fff;
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
