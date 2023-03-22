@@ -8,7 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import "./App.css";
 
 const defaultAuth = {
-  isAuthenticated: localStorage.getItem('loginToken') != '',
+  isAuthenticated: localStorage.getItem('loginToken') != null || '',
   signin() {
     this.isAuthenticated = true;
   },
@@ -25,9 +25,9 @@ function App() {
       <Router>
         <div className="App">
           <Switch>
-            <Route exact path="/">
+            <PrivateRoute exact path="/">
               <Redirect to='/home'/>
-            </Route>
+            </PrivateRoute>
             <PrivateRoute path="/home">
               <Home />
             </PrivateRoute>

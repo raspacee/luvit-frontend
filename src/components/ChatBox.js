@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
 	Grid,
 	Box,
@@ -17,18 +17,32 @@ import moment from "moment";
 const ChatBox = (props) => {
 	const [message, setMessage] = useState("");
 	const userEmail = localStorage.getItem("userInfo").email;
+	const messagesEndRef = useRef();
+
+	const scrollToBottom = () => {
+		console.log('called')
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}
+
+	useEffect(() => {
+		scrollToBottom();	
+	}, [props.friends])
 
 	if (props.friends == null) {
-		return <Typography variant="h3" sx={{ color: '#fff' }}>Sad :(, such a barren chat</Typography>
+		return (
+			<Typography variant="h3" sx={{ color: "#fff" }}>
+				Sad :(, such a barren chat
+			</Typography>
+		);
 	}
-	
+
 	const messagesRendered = props.friends[props.tabIndex].chat.map(
 		(message, idx) => {
 			const flexDecision =
 				userEmail === message.from ? "flex-end" : "flex-start";
 			return (
 				<ListItem
-					key={message.message}
+					key={idx}
 					style={{
 						display: "flex",
 						justifyContent: `${flexDecision}`,
@@ -51,9 +65,9 @@ const ChatBox = (props) => {
 							<Typography
 								variant="button"
 								gutterBottom
-								sx={{ color: '#fff', mr: 1.5 }}
+								sx={{ color: "#fff", mr: 1.5 }}
 							>
-							{moment(message.time).format("h:mm a")}
+								{moment(message.time).format("h:mm a")}
 							</Typography>
 							<Box
 								sx={{
@@ -80,11 +94,16 @@ const ChatBox = (props) => {
 				justifyContent: "space-between",
 				minHeight: "15rem",
 				bgcolor: "#76599B",
+				maxHeight: '28rem',
 				borderRadius: 7,
+				overflow: 'scroll',
 				p: 5,
 			}}
 		>
-			<List>{messagesRendered}</List>
+			<List>
+			{messagesRendered}
+			<div ref={messagesEndRef} />
+			</List>
 			<Box sx={{ display: "flex", alignContent: "center" }}>
 				<TextField
 					id="outlined-basic"
@@ -97,8 +116,10 @@ const ChatBox = (props) => {
 				<IconButton
 					sx={{ ml: 3 }}
 					onClick={() => {
-						props.sendMessageHandler(message);
-						setMessage("");
+						if (message != "") {
+							props.sendMessageHandler(message);
+							setMessage("");
+						}
 					}}
 				>
 					<SendIcon fontSize="large" sx={{ color: "#2952BA" }} />

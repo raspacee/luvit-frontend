@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
+import { baseUrl } from './api';
 
-const URL = 'https://luvit-backend.onrender.com';
-const socket = io(URL, { autoConnect: false });
+const socket = io(baseUrl, { autoConnect: false });
 
 // socket.onAny((event, ...args) => {
 //   console.log(event, args);
